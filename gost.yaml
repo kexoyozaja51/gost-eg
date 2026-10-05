@@ -1,0 +1,60 @@
+services:
+  - name: eg-proxy
+    addr: :25611
+
+    handler:
+      type: http
+      chain: eg-chain
+      retries: 5
+      readTimeout: "3s"
+      idleTimeout: "3s"
+
+    listener:
+      type: tcp
+
+chains:
+  - name: eg-chain
+
+    hops:
+      - name: eg-hop
+        selector:
+          strategy: rand
+          maxFails: 2
+          failTimeout: 15s
+        nodes:
+          - name: eg-upstream-0
+            addr: 41.196.16.228:1981
+            connector:
+              type: http
+              metadata:
+                timeout: 3s
+                connectTimeout: 3s
+            dialer:
+              type: tcp
+          - name: eg-upstream-1
+            addr: 84.36.141.180:1976
+            connector:
+              type: http
+              metadata:
+                timeout: 3s
+                connectTimeout: 3s
+            dialer:
+              type: tcp
+          - name: eg-upstream-2
+            addr: 45.245.208.182:8080
+            connector:
+              type: http
+              metadata:
+                timeout: 3s
+                connectTimeout: 3s
+            dialer:
+              type: tcp
+          - name: eg-upstream-3
+            addr: 196.204.26.243:1976
+            connector:
+              type: http
+              metadata:
+                timeout: 3s
+                connectTimeout: 3s
+            dialer:
+              type: tcp
