@@ -1,0 +1,15 @@
+services:
+  gost:
+    image: gogost/gost:latest
+    container_name: gost-eg
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:25611:25611"
+
+    volumes:
+      - ./gost.yaml:/etc/gost/gost.yaml:ro
+
+    command:
+      - "-C"
+      - "/etc/gost/gost.yaml"
